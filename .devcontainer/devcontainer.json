@@ -1,0 +1,71 @@
+{
+  "name": "Hardened Kali CTF",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "kali-ctf",
+  "workspaceFolder": "/workspace",
+
+  // User configuration
+  "remoteUser": "ctf",
+  "updateRemoteUserUID": true,
+
+  // Security: Disable features that could leak information
+  "features": {},
+
+  // VS Code / Cursor settings
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // Disable telemetry
+        "telemetry.telemetryLevel": "off",
+        "redhat.telemetry.enabled": false,
+
+        // Security: Disable automatic extension recommendations
+        "extensions.autoCheckUpdates": false,
+        "extensions.autoUpdate": false,
+
+        // Security: Disable shell integration that could leak data
+        "terminal.integrated.shellIntegration.enabled": false,
+
+        // Security: Disable send to cloud features
+        "workbench.enableExperiments": false,
+        "workbench.settings.enableNaturalLanguageSearch": false,
+
+        // Security: Restrict workspace trust
+        "security.workspace.trust.enabled": true,
+        "security.workspace.trust.startupPrompt": "always",
+
+        // Terminal settings
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash",
+            "args": ["--norc", "--noprofile"]
+          }
+        },
+
+        // Editor settings for CTF work
+        "files.autoSave": "afterDelay",
+        "files.autoSaveDelay": 1000,
+        "editor.wordWrap": "on"
+      },
+
+      // Minimal extensions - security focused
+      "extensions": [
+        // Syntax highlighting only - no network-dependent extensions
+        "ms-python.python",
+        "redhat.vscode-yaml"
+      ]
+    }
+  },
+
+  // Post-create command to verify security settings
+  "postCreateCommand": "echo '🔒 Hardened Kali CTF container ready' && whoami && id",
+
+  // Lifecycle scripts
+  "postStartCommand": "echo 'Container started in secure mode'",
+
+  // Shutdown action
+  "shutdownAction": "stopCompose"
+}
+
+

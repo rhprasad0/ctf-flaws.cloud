@@ -1,0 +1,167 @@
+#include <tunables/global>
+
+# AppArmor profile for Hardened Kali CTF Container
+# To load: sudo apparmor_parser -r /path/to/apparmor-profile
+# To unload: sudo apparmor_parser -R /path/to/apparmor-profile
+
+profile kali-ctf-hardened flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+  #include <abstractions/bash>
+  #include <abstractions/consoles>
+  #include <abstractions/nameservice>
+
+  # =============================================================
+  # NETWORK RESTRICTIONS
+  # =============================================================
+  
+  # Allow network access (required for CTF challenges)
+  # flaws.cloud and related AWS services
+  network inet stream,
+  network inet dgram,
+  network inet6 stream,
+  network inet6 dgram,
+  network inet raw,  # Required for nmap, ping
+  
+  # Block Unix sockets to host (prevent container escape via Docker socket)
+  deny network unix,
+  
+  # =============================================================
+  # FILE SYSTEM RESTRICTIONS
+  # =============================================================
+  
+  # Deny access to sensitive host paths
+  deny /proc/sys/** w,
+  deny /proc/sysrq-trigger rw,
+  deny /proc/kcore r,
+  deny /proc/kmem rw,
+  deny /proc/mem rw,
+  deny /sys/** w,
+  deny /sys/firmware/** rw,
+  deny /sys/kernel/** rw,
+  deny /sys/fs/** w,
+  
+  # Deny access to Docker socket
+  deny /var/run/docker.sock rw,
+  deny /run/docker.sock rw,
+  
+  # Deny access to host credentials
+  deny /root/.aws/** rw,
+  deny /home/*/.aws/** rw,
+  deny /root/.ssh/** rw,
+  deny /home/*/.ssh/** rw,
+  deny /root/.gnupg/** rw,
+  deny /home/*/.gnupg/** rw,
+  deny /etc/shadow r,
+  deny /etc/gshadow r,
+  
+  # =============================================================
+  # ALLOWED PATHS - Container filesystem
+  # =============================================================
+  
+  # Read-only access to system directories
+  /bin/** rix,
+  /sbin/** rix,
+  /usr/** rix,
+  /lib/** rm,
+  /lib64/** rm,
+  /lib32/** rm,
+  /etc/** r,
+  
+  # Read-write access to tmp directories
+  /tmp/** rw,
+  /var/tmp/** rw,
+  /run/** rw,
+  /var/run/** rw,
+  
+  # Workspace directory - full access
+  /workspace/** rwkl,
+  
+  # Home directory for ctf user
+  /home/ctf/** rwkl,
+  /home/ctf/.cache/** rw,
+  
+  # Device access
+  /dev/null rw,
+  /dev/zero rw,
+  /dev/full rw,
+  /dev/random r,
+  /dev/urandom r,
+  /dev/tty rw,
+  /dev/pts/* rw,
+  /dev/ptmx rw,
+  /dev/shm/** rw,
+  
+  # Proc filesystem - limited access
+  /proc/ r,
+  /proc/[0-9]*/fd/ r,
+  /proc/[0-9]*/fd/** rw,
+  /proc/[0-9]*/stat r,
+  /proc/[0-9]*/status r,
+  /proc/[0-9]*/cmdline r,
+  /proc/[0-9]*/maps r,
+  /proc/[0-9]*/mounts r,
+  /proc/[0-9]*/net/** r,
+  /proc/[0-9]*/task/** r,
+  /proc/sys/kernel/random/uuid r,
+  /proc/sys/kernel/hostname r,
+  /proc/sys/kernel/osrelease r,
+  /proc/sys/kernel/ostype r,
+  /proc/sys/kernel/version r,
+  /proc/filesystems r,
+  /proc/meminfo r,
+  /proc/cpuinfo r,
+  /proc/loadavg r,
+  /proc/uptime r,
+  /proc/version r,
+  /proc/self/** r,
+  
+  # =============================================================
+  # CAPABILITY RESTRICTIONS
+  # =============================================================
+  
+  # Allow only specific capabilities needed for CTF tools
+  capability net_raw,      # nmap, ping
+  capability net_admin,    # network configuration
+  capability setuid,       # sudo
+  capability setgid,       # sudo
+  capability dac_override, # file access as root
+  capability dac_read_search,
+  capability fowner,
+  capability fsetid,
+  capability kill,
+  capability chown,
+  
+  # Deny dangerous capabilities
+  deny capability sys_admin,
+  deny capability sys_module,
+  deny capability sys_rawio,
+  deny capability sys_ptrace,
+  deny capability mknod,
+  
+  # =============================================================
+  # SIGNAL HANDLING
+  # =============================================================
+  
+  signal (send) peer=kali-ctf-hardened,
+  signal (receive) peer=kali-ctf-hardened,
+  signal (send) peer=unconfined,
+  signal (receive) peer=unconfined,
+  
+  # =============================================================
+  # PTRACE RESTRICTIONS
+  # =============================================================
+  
+  # Deny ptrace to prevent debugging attacks
+  deny ptrace (read, trace, tracedby),
+  
+  # =============================================================
+  # MOUNT RESTRICTIONS
+  # =============================================================
+  
+  # Deny all mount operations
+  deny mount,
+  deny umount,
+  deny pivot_root,
+}
+
+

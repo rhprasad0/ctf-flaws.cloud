@@ -1,0 +1,99 @@
+services:
+  kali-ctf:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kali-ctf-hardened
+
+    # Security: Run as non-root user
+    user: ctf
+
+    # Volume mounts
+    volumes:
+      # Workspace mount with caching for performance
+      - ..:/workspace:cached
+
+    # Security: Drop dangerous capabilities, keep ones needed for CTF tools
+    cap_drop:
+      - MKNOD
+      - AUDIT_WRITE
+      - SETFCAP
+      - SYS_ADMIN
+      - SYS_BOOT
+      - SYS_MODULE
+      - SYS_RAWIO
+      - SYS_TIME
+      - SYS_PTRACE
+      - LINUX_IMMUTABLE
+      - MAC_ADMIN
+      - MAC_OVERRIDE
+      - NET_BROADCAST
+      - BLOCK_SUSPEND
+      - LEASE
+      - WAKE_ALARM
+    cap_add:
+      # Required for nmap and network scanning
+      - NET_RAW
+      - NET_ADMIN
+
+    # Security: Prevent privilege escalation
+    security_opt:
+      - no-new-privileges:true
+      # Using Docker's default seccomp profile (well-tested, blocks dangerous syscalls)
+      # Custom seccomp.json available if stricter filtering needed
+      # AppArmor profile (load with: sudo apparmor_parser -r apparmor-profile)
+      # Uncomment after loading the profile on the host:
+      # - apparmor=kali-ctf-hardened
+
+    # Security: Resource limits to prevent DoS
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+        reservations:
+          cpus: '1'
+          memory: 2G
+
+    # Security: Ulimits
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+      nproc:
+        soft: 4096
+        hard: 8192
+
+    # Network configuration
+    networks:
+      - ctf-network
+
+    # Security: No privileged mode
+    privileged: false
+
+    # Security: Prevent container from gaining additional privileges
+    sysctls:
+      - net.ipv4.ip_unprivileged_port_start=0
+
+    # Working directory
+    working_dir: /workspace
+
+    # Keep container running
+    stdin_open: true
+    tty: true
+
+    # Healthcheck
+    healthcheck:
+      test: ["CMD", "id"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+# Custom network with controlled access
+networks:
+  ctf-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_icc: "true"
+      com.docker.network.bridge.enable_ip_masquerade: "true"
