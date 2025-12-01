@@ -43,7 +43,7 @@ flaws.cloud consists of 6 levels, each teaching different AWS security concepts:
 
 Track your progress through the challenges:
 
-- [ ] **Level 1** - S3 bucket basics
+- [x] **Level 1** - S3 bucket basics
 - [ ] **Level 2** - S3 permissions
 - [ ] **Level 3** - S3 bucket enumeration
 - [ ] **Level 4** - EC2 snapshots
@@ -75,4 +75,5 @@ These official resources will help you understand the AWS services involved:
 ---
 
 *Remember: The journey matters more than the destination. Take time to understand each vulnerability before moving on.*
+
 
