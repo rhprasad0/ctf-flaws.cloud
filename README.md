@@ -1,5 +1,32 @@
 # flaws.cloud CTF Challenge
 
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║   🚨🚨🚨 DANGER ZONE 🚨🚨🚨                                                  ║
+║                                                                              ║
+║   ██╗    ██╗ █████╗ ██████╗ ███╗   ██╗██╗███╗   ██╗ ██████╗ ██╗             ║
+║   ██║    ██║██╔══██╗██╔══██╗████╗  ██║██║████╗  ██║██╔════╝ ██║             ║
+║   ██║ █╗ ██║███████║██████╔╝██╔██╗ ██║██║██╔██╗ ██║██║  ███╗██║             ║
+║   ██║███╗██║██╔══██║██╔══██╗██║╚██╗██║██║██║╚██╗██║██║   ██║╚═╝             ║
+║   ╚███╔███╔╝██║  ██║██║  ██║██║ ╚████║██║██║ ╚████║╚██████╔╝██╗             ║
+║    ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝             ║
+║                                                                              ║
+║   🎭 THIS REPOSITORY CONTAINS SPOILERS FOR FLAWS.CLOUD 🎭                   ║
+║                                                                              ║
+║   If you haven't tried the challenges yet, TURN BACK NOW!                   ║
+║   Go to http://flaws.cloud and struggle gloriously on your own first.       ║
+║                                                                              ║
+║   Seriously. The writeups in here will RUIN the fun.                        ║
+║   You'll rob yourself of those sweet, sweet "AHA!" moments.                 ║
+║   Your future self will be disappointed in you.                             ║
+║   Your ancestors will shake their heads in disapproval.                     ║
+║                                                                              ║
+║   Still here? Don't say we didn't warn you... 👀                            ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
+
 A hands-on learning environment for AWS security through the [flaws.cloud](http://flaws.cloud) capture the flag challenges.
 
 ## About flaws.cloud
@@ -44,8 +71,8 @@ flaws.cloud consists of 6 levels, each teaching different AWS security concepts:
 Track your progress through the challenges:
 
 - [x] **Level 1** - S3 bucket basics
-- [ ] **Level 2** - S3 permissions
-- [ ] **Level 3** - S3 bucket enumeration
+- [x] **Level 2** - S3 permissions
+- [x] **Level 3** - S3 bucket enumeration
 - [ ] **Level 4** - EC2 snapshots
 - [ ] **Level 5** - EC2 metadata
 - [ ] **Level 6** - IAM role assumption
