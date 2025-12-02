@@ -35,6 +35,7 @@ RUN apt-get update && \
         # Python for scripting
         python3 \
         python3-pip \
+        pipx \
         && \
     # Generate locale
     sed -i 's/# en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen && \
@@ -88,8 +89,11 @@ WORKDIR /workspace
 # Switch to non-root user
 USER ctf
 
-# Set secure PATH (no . or relative paths)
-ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# Install Pacu (AWS exploitation framework) via pipx for user isolation
+RUN pipx install pacu && pipx ensurepath
+
+# Set secure PATH (include pipx bin directory)
+ENV PATH="/home/ctf/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # Entrypoint for environment sanitization
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
