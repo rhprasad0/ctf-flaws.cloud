@@ -30,6 +30,7 @@ RUN apt-get update && \
         dnsutils \
         iputils-ping \
         iproute2 \
+        openssh-client \
         # AWS CLI for flaws.cloud challenges
         awscli \
         # Python for scripting

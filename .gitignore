@@ -1,0 +1,5 @@
+# Ignore credential files
+**/creds.txt
+**/credentials.txt
+**/*.credentials
+

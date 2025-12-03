@@ -73,7 +73,7 @@ Track your progress through the challenges:
 - [x] **Level 1** - S3 bucket basics
 - [x] **Level 2** - S3 permissions
 - [x] **Level 3** - S3 bucket enumeration
-- [ ] **Level 4** - EC2 snapshots
+- [x] **Level 4** - EC2 snapshots
 - [ ] **Level 5** - EC2 metadata
 - [ ] **Level 6** - IAM role assumption
 
