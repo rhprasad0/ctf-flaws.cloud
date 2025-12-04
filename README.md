@@ -75,7 +75,7 @@ Track your progress through the challenges:
 - [x] **Level 3** - S3 bucket enumeration
 - [x] **Level 4** - EC2 snapshots
 - [x] **Level 5** - EC2 metadata (SSRF)
-- [ ] **Level 6** - IAM role assumption
+- [x] **Level 6** - IAM policy enumeration & API Gateway discovery
 
 ## Working with an AI Agent
 
